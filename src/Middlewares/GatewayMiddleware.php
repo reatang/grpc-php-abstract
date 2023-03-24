@@ -6,7 +6,7 @@ use Psr\Http\Message\RequestInterface;
 use Reatang\GrpcPHPAbstract\Metadata\GatewayHandle;
 use Reatang\GrpcPHPAbstract\Metadata\Metadata;
 
-class Middleware
+class GatewayMiddleware
 {
     /**
      * 设置超时时间

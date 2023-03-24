@@ -3,8 +3,7 @@
 namespace Reatang\GrpcPHPAbstract\Metadata;
 
 /**
- * @property-read $metadata
- * @property-read $trailers
+ * grpc上下文元数据
  */
 class Metadata
 {
