@@ -44,4 +44,23 @@ class GatewayHandle
 
         return new Metadata($m, $t);
     }
+
+    /**
+     * 编码 grpc-gateway 的应答头
+     * @param Metadata $metadata
+     *
+     * @return array
+     */
+    public static function toHeaders(Metadata $metadata): array
+    {
+        $n = [];
+        foreach ($metadata->metadata->toArray() as $h => $v) {
+            $n[GatewayHandle::MetadataHeaderPrefix . $h] = is_array($v) ? join(';', $v) : $v;
+        }
+        foreach ($metadata->trailers->toArray() as $h => $v) {
+            $n[GatewayHandle::MetadataTrailerPrefix . $h] = is_array($v) ? join(';', $v) : $v;
+        }
+
+        return $n;
+    }
 }

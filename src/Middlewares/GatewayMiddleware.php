@@ -49,7 +49,7 @@ class GatewayMiddleware
             return static function (RequestInterface $request, array $options) use ($metadata, $trailers, $handler) {
                 $md = Metadata::create($metadata, $trailers);
 
-                foreach ($md->toHeaders() as $k => $v) {
+                foreach (GatewayHandle::toHeaders($md) as $k => $v) {
                     $request = $request->withAddedHeader($k, $v);
                 }
 
