@@ -8,20 +8,20 @@ namespace Reatang\GrpcPHPAbstract\Metadata;
 class Metadata
 {
     /** @var MD */
-    public MD $metadata;
+    public MD $header;
 
     /** @var MD */
-    public MD $trailers;
+    public MD $trailer;
 
-    public function __construct(array $metadata = [], array $trailers = [])
+    public function __construct(array $header = [], array $trailer = [])
     {
-        $this->metadata = new MD($metadata);
-        $this->trailers = new MD($trailers);
+        $this->header = new MD($header);
+        $this->trailer = new MD($trailer);
     }
 
-    public static function create(array $metadata = [], array $trailers = []): Metadata
+    public static function create(array $header = [], array $trailers = []): Metadata
     {
-        return new static($metadata, $trailers);
+        return new static($header, $trailers);
     }
 
     public static function pairs(string ...$kv): MD {

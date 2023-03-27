@@ -38,18 +38,18 @@ class GatewayMiddleware
     /**
      * 预输入全局处理 metadata
      *
-     * @param array $metadata
+     * @param array $headers
      * @param array $trailers
      *
      * @return callable
      */
-    public static function GrpcMetadata(array $metadata, array $trailers = []): callable
+    public static function GrpcMetadata(array $headers, array $trailers = []): callable
     {
-        return static function (callable $handler) use ($metadata, $trailers) : callable  {
-            return static function (RequestInterface $request, array $options) use ($metadata, $trailers, $handler) {
-                $md = Metadata::create($metadata, $trailers);
+        return static function (callable $handler) use ($headers, $trailers) : callable  {
+            return static function (RequestInterface $request, array $options) use ($headers, $trailers, $handler) {
+                $md = Metadata::create($headers, $trailers);
 
-                foreach (GatewayHandle::toHeaders($md) as $k => $v) {
+                foreach (GatewayHandle::toHeader($md) as $k => $v) {
                     $request = $request->withAddedHeader($k, $v);
                 }
 

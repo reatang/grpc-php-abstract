@@ -51,13 +51,13 @@ class GatewayHandle
      *
      * @return array
      */
-    public static function toHeaders(Metadata $metadata): array
+    public static function toHeader(Metadata $metadata): array
     {
         $n = [];
-        foreach ($metadata->metadata->toArray() as $h => $v) {
+        foreach ($metadata->header->toArray() as $h => $v) {
             $n[GatewayHandle::MetadataHeaderPrefix . $h] = is_array($v) ? join(';', $v) : $v;
         }
-        foreach ($metadata->trailers->toArray() as $h => $v) {
+        foreach ($metadata->trailer->toArray() as $h => $v) {
             $n[GatewayHandle::MetadataTrailerPrefix . $h] = is_array($v) ? join(';', $v) : $v;
         }
 
