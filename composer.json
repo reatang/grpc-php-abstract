@@ -5,7 +5,9 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Reatang\\GrpcPHPAbstract\\": "src/"
+            "Reatang\\GrpcPHPAbstract\\": "src/",
+            "Google\\Api\\": "pb/Google/Api/",
+            "GPBMetadata\\Google\\Api\\": "pb/GPBMetadata/Google/Api/"
         }
     },
     "authors": [
