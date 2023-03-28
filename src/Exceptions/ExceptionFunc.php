@@ -6,8 +6,8 @@ use GuzzleHttp\Exception\ServerException;
 use const Grpc\STATUS_UNKNOWN;
 
 /**
- * GrpcBusinessException 格式：{"code":2, "message":"20202:这是一条错误", "details":[]}
- * GrpcException 格式：{"code":15, "message":"Some error", "details":[]}
+ * GrpcBusinessException 格式：{"code":2, "message":"!20202:这是一条错误", "details":[]}
+ * GrpcException 格式：{"code":2, "message":"Some error", "details":[]}
  */
 class ExceptionFunc extends \Exception
 {

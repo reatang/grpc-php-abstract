@@ -1,6 +1,6 @@
 <?php
 
-namespace Reatang\GrpcPHPAbstract;
+namespace Reatang\GrpcPHPAbstract\Middlewares;
 
 use Psr\Http\Message\RequestInterface;
 use Reatang\GrpcPHPAbstract\Metadata\GatewayHandle;
