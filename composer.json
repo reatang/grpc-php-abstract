@@ -23,6 +23,7 @@
         "google/protobuf": "v3.21.12",
         "ext-protobuf": "*",
         "ext-grpc": "*",
-        "guzzlehttp/guzzle": "^7.5"
+        "guzzlehttp/guzzle": "^7.5",
+        "psr/log": "^1.0.1"
     }
 }
