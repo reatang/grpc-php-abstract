@@ -17,18 +17,12 @@ use const Grpc\STATUS_ABORTED;
  */
 class GrpcRetry extends Interceptor
 {
-    /**
-     * 最大重试次数
-     */
-    const MAX_RETRIES = 3;
-
-    /**
-     * 每次请求间隔时间:毫秒
-     */
-    const RETRY_DELAY = 500;
-
+    /** @var int 最大重试次数 */
     protected $maxAttempts;
+
+    /** @var int 重试间隔时间，单位：毫秒ms */
     protected $delay;
+
     protected $retryableStatusCodes = [];
 
     /**
@@ -39,8 +33,8 @@ class GrpcRetry extends Interceptor
     protected $logger;
 
     public function __construct(
-        $maxAttempts = self::MAX_RETRIES,
-        $delay = self::RETRY_DELAY,
+        $maxAttempts = 3,
+        $delay = 300,
         $retryableStatusCodes = [STATUS_UNAVAILABLE, STATUS_ABORTED]
     ) {
         $this->maxAttempts = $maxAttempts;

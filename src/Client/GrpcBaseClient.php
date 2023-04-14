@@ -19,13 +19,13 @@ abstract class GrpcBaseClient
     /**
      * 自动初始化
      *
-     * @param string $clientClassName
-     * @param string $host
-     * @param array  $interceptors
+     * @param string     $clientClassName
+     * @param string     $host
+     * @param array|null $interceptors
      *
      * @return void
      */
-    protected function initClient(string $clientClassName, string $host, array $interceptors = [])
+    protected function initClient(string $clientClassName, string $host, ?array $interceptors = [])
     {
         $this->client = new $clientClassName(...$this->getChannel($host, [
             'credentials' => ChannelCredentials::createInsecure(),

@@ -57,4 +57,19 @@ class GatewayMiddleware
             };
         };
     }
+
+    /**
+     * 重试
+     *
+     * @param int $maxAttempt
+     * @param int $delay
+     *
+     * @return \Closure
+     */
+    public static function retry(int $maxAttempt = 3, int $delay = 300): callable
+    {
+        return function (callable $handler) use ($maxAttempt, $delay) {
+            return new GatewayRetry($maxAttempt, $delay, $handler);
+        };
+    }
 }

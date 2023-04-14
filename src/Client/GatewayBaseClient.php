@@ -2,7 +2,7 @@
 
 namespace Reatang\GrpcPHPAbstract\Client;
 
-use Reatang\GrpcPHPAbstract\Middlewares\GatewayRetry;
+use Reatang\GrpcPHPAbstract\Middlewares\GatewayMiddleware;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\HandlerStack;
@@ -31,7 +31,7 @@ abstract class GatewayBaseClient
      * @param string     $host
      * @param callable[] $middleware
      */
-    public function __construct(string $host, array $middleware)
+    public function __construct(string $host, array $middleware = [])
     {
         $this->host = $host;
 
@@ -41,7 +41,7 @@ abstract class GatewayBaseClient
         }
         $h->push(Middleware::httpErrors(), 'http_errors');
         $h->push(Middleware::prepareBody(), 'prepare_body');
-        $h->push(Middleware::retry(GatewayRetry::retryDecider(), GatewayRetry::retryDelay()), 'retry');
+        $h->push(GatewayMiddleware::retry(), 'retry');
 
         $this->client = new Client([
             'base_uri' => $this->host(),
