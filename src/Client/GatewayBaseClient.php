@@ -2,10 +2,12 @@
 
 namespace Reatang\GrpcPHPAbstract\Client;
 
+use Reatang\GrpcPHPAbstract\Middlewares\GatewayRetry;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 use Reatang\GrpcPHPAbstract\Exceptions\ExceptionFunc;
 use Reatang\GrpcPHPAbstract\Exceptions\GrpcException;
@@ -17,6 +19,13 @@ abstract class GatewayBaseClient
     protected string $host;
 
     protected Client $client;
+
+    /**
+     * 函数的应答对照（必写）
+     *
+     * @var GatewayRoute[]
+     */
+    protected array $methodResponseMap = [];
 
     /**
      * @param string     $host
@@ -32,6 +41,7 @@ abstract class GatewayBaseClient
         }
         $h->push(Middleware::httpErrors(), 'http_errors');
         $h->push(Middleware::prepareBody(), 'prepare_body');
+        $h->push(Middleware::retry(GatewayRetry::retryDecider(), GatewayRetry::retryDelay()), 'retry');
 
         $this->client = new Client([
             'base_uri' => $this->host(),
@@ -63,5 +73,54 @@ abstract class GatewayBaseClient
     protected function metadata(ResponseInterface $response): Metadata
     {
         return GatewayHandle::parseHeader($response->getHeaders());
+    }
+
+    /**
+     * @param string $methodName
+     * @param string $url gateway url
+     * @param string $response
+     *
+     * @return void
+     * @throws GrpcException
+     */
+    public function addRoute(string $methodName, string $url, string $response)
+    {
+        if (!isset($this->methodResponseMap[$methodName])) {
+            $this->methodResponseMap[$methodName] = new GatewayRoute($url, $response);
+        } else {
+            throw new GrpcException(__CLASS__ . " {$methodName} is registered", 500);
+        }
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     *
+     * @return mixed
+     * @throws GrpcException|\GuzzleHttp\Exception\GuzzleException
+     */
+    public function __call($name, $arguments)
+    {
+        if (!isset($this->methodResponseMap[$name])) {
+            throw new GrpcException(__CLASS__ . " {$name} not config route", 500);
+        }
+
+        $route = $this->methodResponseMap[$name];
+
+        try {
+            $opts = [];
+            if (isset($arguments[0])) {
+                $opts[RequestOptions::BODY] = $arguments[0]->serializeToJsonString();
+            }
+
+            $response = $this->client->request('POST', $route->getUrl(), $opts);
+        } catch (ServerException $exception) {
+            throw $this->exception($exception);
+        }
+
+        $respPb = $route->newResponse();
+        $respPb->mergeFromJsonString($response->getBody(), true);
+
+        return $respPb;
     }
 }

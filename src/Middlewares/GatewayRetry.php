@@ -4,7 +4,6 @@ namespace Reatang\GrpcPHPAbstract\Middlewares;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
 
 /**
  * http 重试中间件
@@ -23,7 +22,7 @@ class GatewayRetry
      */
     public static function retryDecider()
     {
-        return function ($retries, Request $request, Response $response = null, RequestException $exception = null)
+        return function ($retries, Request $request, Response $response = null, \Exception $exception = null)
         {
             if ($retries >= self::$MAX_RETRIES) {
                 return false;
