@@ -66,7 +66,9 @@ class GrpcRetry extends Interceptor
 
             [$response, $status] = $call->wait();
 
-            if (!in_array($status->code, $this->retryableStatusCodes)) {
+            if (!in_array($status->code, $this->retryableStatusCodes) ||
+                ($status->code == \Grpc\STATUS_UNAVAILABLE && strpos($status->details, 'failed to connect') !== false)
+            ) {
                 return new ResponseCall($response, $status);
             }
 
