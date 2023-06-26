@@ -18,6 +18,9 @@ abstract class GrpcBaseClient
     /** @var BaseStub */
     protected $client;
 
+    /** @var int ms */
+    protected $timeout = 2000;
+
     /** @var LoggerInterface $logger */
     protected $logger = null;
 
@@ -131,6 +134,15 @@ abstract class GrpcBaseClient
      */
     protected function rawCall($method, $arguments)
     {
+        if (!isset($arguments[1])) {
+            $arguments[1] = [];
+        }
+
+        // timeout 单位：微秒
+        if ($this->timeout > 0) {
+            $arguments[2]['timeout'] = $this->timeout * 1000;
+        }
+
         $call = call_user_func_array([$this->client, ucfirst($method)], $arguments);
 
         return $call->wait();
