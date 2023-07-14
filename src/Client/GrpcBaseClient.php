@@ -11,24 +11,29 @@ use Reatang\GrpcPHPAbstract\Exceptions\ExceptionFunc;
 use Reatang\GrpcPHPAbstract\Exceptions\GrpcException;
 use Reatang\GrpcPHPAbstract\Metadata\GrpcHandle;
 use Reatang\GrpcPHPAbstract\Metadata\Metadata;
+use Reatang\GrpcPHPAbstract\Middlewares\GrpcLogger;
 use Reatang\GrpcPHPAbstract\Middlewares\GrpcRetry;
+use Reatang\GrpcPHPAbstract\Utils\LoggerTrait;
 
 abstract class GrpcBaseClient
 {
+    use LoggerTrait;
+
     /** @var BaseStub */
     protected $client;
 
     /** @var int ms */
     protected $timeout = 2000;
 
-    /** @var LoggerInterface $logger */
-    protected $logger = null;
-
     /** @var array $reConnectionParams reconnection need */
     private $reConnectionParams = [];
 
-    public function __construct($host, $clientClassName, array $interceptors = [])
+    public function __construct($host, $clientClassName, array $interceptors = [], array $options = [])
     {
+        if (isset($options['logger']) && $options['logger'] instanceof LoggerInterface) {
+            $this->setLogger($options['logger']);
+        }
+
         $this->initClient($clientClassName, $host, $interceptors);
     }
 
@@ -48,6 +53,10 @@ abstract class GrpcBaseClient
 
         if (empty($interceptors)) {
             $interceptors = [];
+        }
+
+        if ($this->logger) {
+            $interceptors[] = new GrpcLogger($this->logger);
         }
 
         // auto retry interceptor
