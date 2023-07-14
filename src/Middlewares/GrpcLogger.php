@@ -34,33 +34,23 @@ class GrpcLogger extends Interceptor
         array $metadata = [],
         array $options = []
     ) {
-        $this->requestLog($method, $argument);
-        $call = $continuation($method, $argument, $deserialize, $metadata, $options);
+        $startTime = microtime(true);
 
+        $call = $continuation($method, $argument, $deserialize, $metadata, $options);
         [$response, $status] = $call->wait();
 
-        $this->responseLog($method, $response ?? null, $status);
-
+        $this->responseLog($method, $argument, $response ?? null, $status, $startTime);
         return new ResponseCall($response, $status);
     }
 
-
-    private function requestLog($name, ?Message $message)
+    private function responseLog($name, ?Message $argument, ?Message $response, $status, $startTime)
     {
+        $t = (microtime(true) - $startTime) * 1000;
         if ($this->logger) {
-            $this->writeLogInfo("[GRPC] Request {$name}", [
-                'message' => $this->decodeMessage($message),
-            ]);
-        }
-    }
-
-    private function responseLog($name, ?Message $message, $status)
-    {
-        if ($this->logger && !is_null($message)) {
-            $this->writeLogInfo("[GRPC] Response {$name}", [
-                'status_code' => $status->code,
-                'status_msg' => $status->details,
-                'message' => $this->decodeMessage($message),
+            $this->writeLogInfo("[GRPC] CALL {$name} - Time: {$t}", [
+                'status' => "{$status->code}:$status->details",
+                'request' => $this->decodeMessage($argument),
+                'response' => $this->decodeMessage($response),
             ]);
         }
     }
