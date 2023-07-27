@@ -22,7 +22,8 @@ class GrpcLogger extends Interceptor
      */
     protected $logger;
 
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(LoggerInterface $logger)
+    {
         $this->setLogger($logger);
     }
 
