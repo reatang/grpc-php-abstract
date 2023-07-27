@@ -7,6 +7,7 @@ use Grpc\Interceptor;
 use Grpc\UnaryCall;
 use Psr\Log\LoggerInterface;
 use Reatang\GrpcPHPAbstract\Call\ResponseCall;
+use Reatang\GrpcPHPAbstract\Utils\LoggerTrait;
 use const Grpc\STATUS_UNAVAILABLE;
 use const Grpc\STATUS_ABORTED;
 
@@ -17,6 +18,8 @@ use const Grpc\STATUS_ABORTED;
  */
 class GrpcRetry extends Interceptor
 {
+    use LoggerTrait;
+
     /** @var int 最大重试次数 */
     protected $maxAttempts;
 
@@ -24,13 +27,6 @@ class GrpcRetry extends Interceptor
     protected $delay;
 
     protected $retryableStatusCodes = [];
-
-    /**
-     * 日志记录
-     *
-     * @var LoggerInterface
-     */
-    protected $logger;
 
     public function __construct(
         $maxAttempts = 3,
@@ -83,17 +79,5 @@ class GrpcRetry extends Interceptor
         }
 
         return new ResponseCall(null, $status);
-    }
-
-    /**
-     * @param LoggerInterface $logger
-     *
-     * @return $this
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-
-        return $this;
     }
 }

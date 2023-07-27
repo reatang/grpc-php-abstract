@@ -22,7 +22,8 @@ class GrpcLogger extends Interceptor
      */
     protected $logger;
 
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(LoggerInterface $logger)
+    {
         $this->setLogger($logger);
     }
 
@@ -46,13 +47,12 @@ class GrpcLogger extends Interceptor
     private function responseLog($name, ?Message $argument, ?Message $response, $status, $startTime)
     {
         $t = (microtime(true) - $startTime) * 1000;
-        if ($this->logger) {
-            $this->writeLogInfo("[GRPC] CALL {$name} - Time: {$t}", [
-                'status' => "{$status->code}:$status->details",
-                'request' => $this->decodeMessage($argument),
-                'response' => $this->decodeMessage($response),
-            ]);
-        }
+
+        $this->writeLogInfo("[GRPC] CALL {$name} - Time: {$t}", [
+            'status' => "{$status->code}:$status->details",
+            'request' => $this->decodeMessage($argument),
+            'response' => $this->decodeMessage($response),
+        ]);
     }
 
     private function decodeMessage(?Message $message) : ?array
@@ -61,13 +61,13 @@ class GrpcLogger extends Interceptor
             return null;
         }
 
+        // 注意，php 的 serializeToJsonString 不支持 google.protobuf.Any 参数的自动解析为JSON，需手动转换
+        // 如果 message 参数中存在Any类型，此处会报错
         return json_decode($message->serializeToJsonString(), true);
     }
 
     protected function writeLogInfo($message, array $context = [])
     {
-        if ($this->logger) {
-            $this->logger->info($message, $context);
-        }
+        $this->logger->info($message, $context);
     }
 }

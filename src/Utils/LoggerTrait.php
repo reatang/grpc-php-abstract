@@ -10,17 +10,20 @@ trait LoggerTrait
     protected $logger = null;
 
     /**
-     * @param LoggerInterface $logger
+     * @param LoggerInterface|null $logger
      *
-     * @return self
+     * @return $this
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(?LoggerInterface $logger)
     {
         $this->logger = $logger;
 
         return $this;
     }
 
+    /**
+     * @return LoggerInterface|null
+     */
     protected function getLogger(): ?LoggerInterface
     {
         return $this->logger;
