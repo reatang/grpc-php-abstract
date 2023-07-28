@@ -70,6 +70,7 @@ class GrpcRetry extends Interceptor
 
             if ($this->logger) {
                 if ($argument instanceof Message) {
+                    // 如果 message 参数中存在Any类型，此处会报错
                     $req = json_decode($argument->serializeToJsonString(), true);
                 }
                 $this->logger->error("[GrpcRetry] {$method} grpc_retry attempt: {$attempt}, got error({$status->code}): {$status->details}", ['argument' => $req ?? $argument]);
