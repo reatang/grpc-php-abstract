@@ -5,8 +5,9 @@ namespace Reatang\GrpcPHPAbstract\Middlewares;
 use Grpc\Interceptor;
 use Grpc\UnaryCall;
 use OpenTelemetry\API\Globals;
+use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\API\Trace\StatusCode;
-use OpenTelemetry\Context\Propagation\ArrayAccessGetterSetter;
+use OpenTelemetry\Context\Context;
 use OpenTelemetry\SDK\Trace\TracerProviderInterface;
 use OpenTelemetry\SemConv\TraceAttributes;
 use Reatang\GrpcPHPAbstract\Call\ResponseCall;
@@ -34,8 +35,6 @@ class GrpcOpenTelemetryTrace extends Interceptor
         array $metadata = [],
         array $options = []
     ) {
-        Globals::propagator()->inject($metadata, ArrayAccessGetterSetter::getInstance());
-
         $name = sprintf("GRPC %s", $method);
         [$_service, $_method] = explode('/', ltrim($method, '/'), 2);
         $attributes = [
@@ -44,7 +43,13 @@ class GrpcOpenTelemetryTrace extends Interceptor
             TraceAttributes::RPC_METHOD => $_method,
         ];
 
-        $span = $this->tracer->spanBuilder($name)->setAttributes($attributes)->startSpan();
+        $span = $this->tracer->spanBuilder($name)
+                             ->setSpanKind(SpanKind::KIND_CLIENT)
+                             ->setAttributes($attributes)
+                             ->startSpan();
+
+        $ctx = $span->storeInContext(Context::getCurrent());
+        Globals::propagator()->inject($metadata, null, $ctx);
 
         /** @var UnaryCall $call */
         $call = $continuation($method, $argument, $deserialize, $metadata, $options);
