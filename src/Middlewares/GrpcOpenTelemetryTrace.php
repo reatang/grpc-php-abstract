@@ -17,7 +17,7 @@ use Reatang\GrpcPHPAbstract\Call\ResponseCall;
 class GrpcOpenTelemetryTrace extends Interceptor
 {
     /**
-     * @var \OpenTelemetry\API\Trace\TracerInterface
+     * @var TracerProviderInterface
      */
     protected $tracer;
 
