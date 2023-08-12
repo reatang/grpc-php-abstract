@@ -38,7 +38,7 @@ class GrpcOpenTelemetryTrace extends Interceptor
         $name = sprintf("GRPC %s", $method);
         [$_service, $_method] = explode('/', ltrim($method, '/'), 2);
         $attributes = [
-            TraceAttributes::RPC_SYSTEM => 'php',
+            TraceAttributes::RPC_SYSTEM => 'php-' . PHP_VERSION,
             TraceAttributes::RPC_SERVICE => $_service,
             TraceAttributes::RPC_METHOD => $_method,
         ];
