@@ -22,14 +22,14 @@ class TestServer
 ping (	"
 PingResponse
 pong (	"
-OtelRequest".
-OtelResponse
+OTelRequest".
+OTelResponse
 trace (	
 baggage (	2ê
 
 TestServerm
 Ping1.reatang.grpc_php_abstract.tests.mock.PingRequest2.reatang.grpc_php_abstract.tests.mock.PingResponsem
-Otel1.reatang.grpc_php_abstract.tests.mock.OtelRequest2.reatang.grpc_php_abstract.tests.mock.OtelResponseBSÂPB\\Ê"Reatang\\GrpcPHPAbstract\\Tests\\MockÐâ"Reatang\\GrpcPHPAbstract\\Tests\\Mockbproto3'
+OTel1.reatang.grpc_php_abstract.tests.mock.OTelRequest2.reatang.grpc_php_abstract.tests.mock.OTelResponseBSÂPB\\Ê"Reatang\\GrpcPHPAbstract\\Tests\\MockÐâ"Reatang\\GrpcPHPAbstract\\Tests\\Mockbproto3'
         , true);
 
         static::$is_initialized = true;

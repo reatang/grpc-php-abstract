@@ -7,8 +7,8 @@ use OpenTelemetry\API\Baggage\Baggage;
 use OpenTelemetry\API\Globals;
 use OpenTelemetry\API\Trace\Span;
 use OpenTelemetry\Context\ContextKeys;
-use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest;
-use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelResponse;
+use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest;
+use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse;
 use Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingRequest;
 use Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingResponse;
 use Reatang\GrpcPHPAbstract\Tests\Mock\TestServerStub;
@@ -33,11 +33,11 @@ class MockService extends TestServerStub
         return null;
     }
 
-    public function Otel(OtelRequest $request, ServerContext $context): ?OtelResponse
+    public function OTel(OTelRequest $request, ServerContext $context): ?OTelResponse
     {
-        $m = new GrpcOtelServerMiddleware;
+        $m = new GrpcOTelServerMiddleware;
 
-        return $m->handle($request, $context, function (OtelRequest $request, ServerContext $context): ?OtelResponse {
+        return $m->handle($request, $context, function (OTelRequest $request, ServerContext $context): ?OTelResponse {
             $context = Globals::propagator()->extract($context->clientMetadata());
 
             /** @var Baggage $baggage */
@@ -45,7 +45,7 @@ class MockService extends TestServerStub
             /** @var Span $span */
             $span = $context->get(ContextKeys::span());
 
-            return new OtelResponse([
+            return new OTelResponse([
                 "trace" => $span->getContext()->getTraceId(),
                 "baggage" => $baggage->getValue("baggage1")
             ]);

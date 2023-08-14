@@ -15,10 +15,10 @@ message PingResponse {
   string pong = 1;
 }
 
-message OtelRequest {
+message OTelRequest {
 }
 
-message OtelResponse {
+message OTelResponse {
   string trace = 1;
   string baggage = 2;
 }
@@ -26,5 +26,5 @@ message OtelResponse {
 service TestServer {
   rpc Ping(PingRequest) returns(PingResponse);
 
-  rpc Otel(OtelRequest) returns(OtelResponse);
+  rpc OTel(OTelRequest) returns(OTelResponse);
 }

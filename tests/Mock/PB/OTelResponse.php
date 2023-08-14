@@ -9,9 +9,9 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Generated from protobuf message <code>reatang.grpc_php_abstract.tests.mock.OtelResponse</code>
+ * Generated from protobuf message <code>reatang.grpc_php_abstract.tests.mock.OTelResponse</code>
  */
-class OtelResponse extends \Google\Protobuf\Internal\Message
+class OTelResponse extends \Google\Protobuf\Internal\Message
 {
     /**
      * Generated from protobuf field <code>string trace = 1;</code>

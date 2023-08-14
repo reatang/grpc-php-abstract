@@ -15,8 +15,8 @@ use OpenTelemetry\SDK\Trace\SpanProcessor\NoopSpanProcessor;
 use OpenTelemetry\SDK\Trace\SpanProcessor\SimpleSpanProcessor;
 use OpenTelemetry\SDK\Trace\TracerProvider;
 use Reatang\GrpcPHPAbstract\Middlewares\GrpcOpenTelemetryTrace;
-use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest;
-use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelResponse;
+use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest;
+use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse;
 use Reatang\GrpcPHPAbstract\Tests\Mock\TestServerAbsRpc;
 use Reatang\GrpcPHPAbstract\Tests\TestCase;
 
@@ -52,7 +52,7 @@ class OpenTelemetryTest extends TestCase
 
     public function testBase()
     {
-        $call = $this->getMockClient()->rawClient()->Otel(new OtelRequest(), []);
+        $call = $this->getMockClient()->rawClient()->OTel(new OTelRequest(), []);
 
         [$response, $status] = $call->wait();
         if ($status->code > 0) {
@@ -71,9 +71,9 @@ class OpenTelemetryTest extends TestCase
         $metadata = [];
         Globals::propagator()->inject($metadata);
 
-        $call = $this->getMockClient()->rawClient()->Otel(new OtelRequest(), $metadata);
+        $call = $this->getMockClient()->rawClient()->OTel(new OTelRequest(), $metadata);
 
-        /** @var OtelResponse $response */
+        /** @var OTelResponse $response */
         [$response, $status] = $call->wait();
 
         $currentBaggage->detach();

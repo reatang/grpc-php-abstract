@@ -10,14 +10,14 @@ use OpenTelemetry\API\Trace\StatusCode;
 use OpenTelemetry\Context\Context;
 use Reatang\GrpcPHPAbstract\Utils\MetadataAccessGetterSetter;
 
-class GrpcOtelServerMiddleware
+class GrpcOTelServerMiddleware
 {
     public function handle(Message $message, ServerContext $context, $next) : ?Message
     {
         $parentContext = Globals::propagator()->extract($context->clientMetadata(), MetadataAccessGetterSetter::getInstance());
 
         $span = Globals::tracerProvider()
-                       ->getTracer("reatang/grpc-php-abstract/server-middleware")
+                       ->getTracer("reatang/grpc-otel-server-middleware")
                        ->spanBuilder("GRPC " . $context->method())
                        ->setParent($parentContext)
                        ->setSpanKind(SpanKind::KIND_SERVER)

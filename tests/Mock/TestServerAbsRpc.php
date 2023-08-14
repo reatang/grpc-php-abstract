@@ -8,14 +8,14 @@ use Reatang\GrpcPHPAbstract\Client\GrpcBaseClient;
 // 请求参数
 use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingRequest;
 use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingResponse;
-use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest;
-use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelResponse;
+use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest;
+use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse;
 
 /**
  * @property TestServerClient $client
  *
  * @method PingResponse Ping(PingRequest $request)
- * @method OtelResponse Otel(OtelRequest $request)
+ * @method OTelResponse OTel(OTelRequest $request)
  *
  */
 class TestServerAbsRpc extends GrpcBaseClient

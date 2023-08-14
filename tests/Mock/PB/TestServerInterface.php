@@ -18,12 +18,12 @@ interface TestServerInterface
     public function ping(\Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingRequest $request);
 
     /**
-     * Method <code>otel</code>
+     * Method <code>oTel</code>
      *
-     * @param \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest $request
-     * @return \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelResponse
+     * @param \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest $request
+     * @return \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse
      */
-    public function otel(\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest $request);
+    public function oTel(\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest $request);
 
 }
 

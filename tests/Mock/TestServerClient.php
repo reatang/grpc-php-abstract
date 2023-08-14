@@ -31,16 +31,16 @@ class TestServerClient extends \Grpc\BaseStub {
     }
 
     /**
-     * @param \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest $argument input argument
+     * @param \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
      * @return \Grpc\UnaryCall
      */
-    public function Otel(\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest $argument,
+    public function OTel(\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest $argument,
       $metadata = [], $options = []) {
-        return $this->_simpleRequest('/reatang.grpc_php_abstract.tests.mock.TestServer/Otel',
+        return $this->_simpleRequest('/reatang.grpc_php_abstract.tests.mock.TestServer/OTel',
         $argument,
-        ['\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelResponse', 'decode'],
+        ['\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse', 'decode'],
         $metadata, $options);
     }
 

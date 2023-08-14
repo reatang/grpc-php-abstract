@@ -22,15 +22,15 @@ class TestServerStub {
     }
 
     /**
-     * @param \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest $request client request
+     * @param \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest $request client request
      * @param \Grpc\ServerContext $context server request context
-     * @return \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelResponse for response data, null if if error occured
+     * @return \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse for response data, null if if error occured
      *     initial metadata (if any) and status (if not ok) should be set to $context
      */
-    public function Otel(
-        \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest $request,
+    public function OTel(
+        \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest $request,
         \Grpc\ServerContext $context
-    ): ?\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelResponse {
+    ): ?\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse {
         $context->setStatus(\Grpc\Status::unimplemented());
         return null;
     }
@@ -49,10 +49,10 @@ class TestServerStub {
                 '\Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingRequest',
                 \Grpc\MethodDescriptor::UNARY_CALL
             ),
-            '/reatang.grpc_php_abstract.tests.mock.TestServer/Otel' => new \Grpc\MethodDescriptor(
+            '/reatang.grpc_php_abstract.tests.mock.TestServer/OTel' => new \Grpc\MethodDescriptor(
                 $this,
-                'Otel',
-                '\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OtelRequest',
+                'OTel',
+                '\Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest',
                 \Grpc\MethodDescriptor::UNARY_CALL
             ),
         ];
