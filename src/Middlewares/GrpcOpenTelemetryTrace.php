@@ -11,6 +11,7 @@ use OpenTelemetry\Context\Context;
 use OpenTelemetry\SDK\Trace\TracerProviderInterface;
 use OpenTelemetry\SemConv\TraceAttributes;
 use Reatang\GrpcPHPAbstract\Call\ResponseCall;
+use Reatang\GrpcPHPAbstract\Utils\MetadataAccessGetterSetter;
 
 /**
  * PHP GRPC 支持 OpenTelemetryTrace
@@ -35,10 +36,9 @@ class GrpcOpenTelemetryTrace extends Interceptor
         array $metadata = [],
         array $options = []
     ) {
-        $name = sprintf("GRPC %s", $method);
+        $name = sprintf("CALL %s", $method);
         [$_service, $_method] = explode('/', ltrim($method, '/'), 2);
         $attributes = [
-            TraceAttributes::RPC_SYSTEM => 'php-' . PHP_VERSION,
             TraceAttributes::RPC_SERVICE => $_service,
             TraceAttributes::RPC_METHOD => $_method,
         ];
@@ -46,20 +46,20 @@ class GrpcOpenTelemetryTrace extends Interceptor
         $span = $this->tracer->spanBuilder($name)
                              ->setSpanKind(SpanKind::KIND_CLIENT)
                              ->setAttributes($attributes)
+                             ->setParent(Context::getCurrent())
                              ->startSpan();
-
         $ctx = $span->storeInContext(Context::getCurrent());
-        Globals::propagator()->inject($metadata, null, $ctx);
+        Globals::propagator()->inject($metadata, MetadataAccessGetterSetter::getInstance(), $ctx);
 
         /** @var UnaryCall $call */
         $call = $continuation($method, $argument, $deserialize, $metadata, $options);
 
         [$response, $status] = $call->wait();
 
-        $span->setAttribute(TraceAttributes::RPC_GRPC_STATUS_CODE, $status);
+        $span->setAttribute(TraceAttributes::RPC_GRPC_STATUS_CODE, $status->code);
 
-        if ($status != \Grpc\STATUS_OK) {
-            $span->setStatus(StatusCode::STATUS_ERROR)->end();
+        if ($status->code != \Grpc\STATUS_OK) {
+            $span->setStatus(StatusCode::STATUS_ERROR, $status->details)->end();
         } else {
             $span->setStatus(StatusCode::STATUS_OK)->end();
         }

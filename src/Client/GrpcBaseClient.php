@@ -69,6 +69,16 @@ abstract class GrpcBaseClient
     }
 
     /**
+     * 获取原始的Client
+     *
+     * @return BaseStub
+     */
+    public function rawClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * 获取grpc通道
      *
      * @param string $host
