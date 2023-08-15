@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package reatang.grpc_php_abstract.tests.mock;
 
+option go_package="./mock";
+
 option php_class_prefix = "PB\\";
 option php_metadata_namespace = "Reatang\\GrpcPHPAbstract\\Tests\\Mock";
 option php_namespace = "Reatang\\GrpcPHPAbstract\\Tests\\Mock";

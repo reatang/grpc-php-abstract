@@ -16,7 +16,7 @@ class TestServer
         }
         $pool->internalAddGeneratedFile(
             '
-ý
+…
 test_server.proto$reatang.grpc_php_abstract.tests.mock"
 PingRequest
 ping (	"
@@ -29,7 +29,7 @@ class TestServer
 
 TestServerm
 Ping1.reatang.grpc_php_abstract.tests.mock.PingRequest2.reatang.grpc_php_abstract.tests.mock.PingResponsem
-OTel1.reatang.grpc_php_abstract.tests.mock.OTelRequest2.reatang.grpc_php_abstract.tests.mock.OTelResponseBSÂPB\\Ê"Reatang\\GrpcPHPAbstract\\Tests\\MockÐâ"Reatang\\GrpcPHPAbstract\\Tests\\Mockbproto3'
+OTel1.reatang.grpc_php_abstract.tests.mock.OTelRequest2.reatang.grpc_php_abstract.tests.mock.OTelResponseB[Z./mockÂPB\\Ê"Reatang\\GrpcPHPAbstract\\Tests\\MockÐâ"Reatang\\GrpcPHPAbstract\\Tests\\Mockbproto3'
         , true);
 
         static::$is_initialized = true;
