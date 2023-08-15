@@ -3,6 +3,12 @@
     "description": "php兼容 grpc原生客户端 和 grpc-gateway 调用",
     "type": "library",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "唐小鸭",
+            "email": "tangtang1251@qq.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Reatang\\GrpcPHPAbstract\\": "src/",
@@ -10,12 +16,11 @@
             "GPBMetadata\\Google\\Api\\": "pb/GPBMetadata/Google/Api/"
         }
     },
-    "authors": [
-        {
-            "name": "唐小鸭",
-            "email": "tangtang1251@qq.com"
+    "autoload-dev": {
+        "psr-4": {
+            "Reatang\\GrpcPHPAbstract\\Tests\\": "tests/"
         }
-    ],
+    },
     "require": {
         "php": "^7.4",
         "ext-json": "*",
@@ -29,6 +34,9 @@
         "open-telemetry/context": "^1.0",
         "open-telemetry/sdk": "^1.0",
         "open-telemetry/sem-conv": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
     },
     "minimum-stability": "dev",
     "config": {
