@@ -9,9 +9,9 @@ use OpenTelemetry\SDK\Trace\Sampler\ParentBased;
 use OpenTelemetry\SDK\Trace\SpanExporter\ConsoleSpanExporterFactory;
 use OpenTelemetry\SDK\Trace\SpanProcessor\SimpleSpanProcessor;
 use OpenTelemetry\SDK\Trace\TracerProvider;
-use Reatang\GrpcPHPAbstract\Tests\Services\MockService;
+use Reatang\GrpcPHPAbstract\Tests\MockPHP\MockService;
 
-include "../vendor/autoload.php";
+include "../../vendor/autoload.php";
 
 // 启动链路追踪SDK
 $tracerProvider = new TracerProvider(

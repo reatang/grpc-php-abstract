@@ -1,4 +1,4 @@
-module go_mock
+module mock_service
 
 go 1.20
 

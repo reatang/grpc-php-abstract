@@ -1,6 +1,6 @@
 <?php
 
-namespace Reatang\GrpcPHPAbstract\Tests\Services;
+namespace Reatang\GrpcPHPAbstract\Tests\MockPHP;
 
 use Grpc\ServerContext;
 use OpenTelemetry\API\Baggage\Baggage;

@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"go_mock/mock"
+	"mock_service/mock"
 	"net"
 	"os"
 

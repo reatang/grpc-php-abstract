@@ -1,6 +1,6 @@
 <?php
 
-namespace Reatang\GrpcPHPAbstract\Tests\Services;
+namespace Reatang\GrpcPHPAbstract\Tests\MockPHP;
 
 use Google\Protobuf\Internal\Message;
 use Grpc\ServerContext;
