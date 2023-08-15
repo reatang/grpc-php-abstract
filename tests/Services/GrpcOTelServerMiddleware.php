@@ -19,13 +19,14 @@ class GrpcOTelServerMiddleware
         $span = Globals::tracerProvider()
                        ->getTracer("reatang/grpc-otel-server-middleware")
                        ->spanBuilder("GRPC " . $context->method())
-                       ->setParent($parentContext)
                        ->setSpanKind(SpanKind::KIND_SERVER)
+                       ->setParent($parentContext)
                        ->startSpan();
-        $span->storeInContext(Context::getCurrent());
+        $scope = Context::storage()->attach($span->storeInContext($parentContext));
 
         $response = $next($message, $context);
 
+        $scope->detach();
         if (!empty($context->status()) && $context->status()['code'] != \Grpc\STATUS_OK) {
             $span->setStatus(StatusCode::STATUS_ERROR, $context->status()['details'])->end();
         } else {

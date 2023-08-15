@@ -47,7 +47,6 @@ func (s Service) Ping(ctx context.Context, request *mock.PingRequest) (*mock.Pin
 func (s Service) OTel(ctx context.Context, request *mock.OTelRequest) (*mock.OTelResponse, error) {
 	bag, span := baggage.FromContext(ctx), oteltrace.SpanContextFromContext(ctx)
 
-	fmt.Printf("%s, %s\n", span.TraceID().String(), bag.Member("baggage1").Value())
 	return &mock.OTelResponse{
 		Trace:   span.TraceID().String(),
 		Baggage: bag.Member("baggage1").Value(),

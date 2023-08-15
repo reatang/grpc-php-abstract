@@ -4,8 +4,8 @@ namespace Reatang\GrpcPHPAbstract\Tests\Services;
 
 use Grpc\ServerContext;
 use OpenTelemetry\API\Baggage\Baggage;
-use OpenTelemetry\API\Globals;
 use OpenTelemetry\API\Trace\Span;
+use OpenTelemetry\Context\Context;
 use OpenTelemetry\Context\ContextKeys;
 use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest;
 use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse;
@@ -38,12 +38,10 @@ class MockService extends TestServerStub
         $m = new GrpcOTelServerMiddleware;
 
         return $m->handle($request, $context, function (OTelRequest $request, ServerContext $context): ?OTelResponse {
-            $context = Globals::propagator()->extract($context->clientMetadata());
-
             /** @var Baggage $baggage */
-            $baggage = $context->get(ContextKeys::baggage());
+            $baggage = Context::getCurrent()->get(ContextKeys::baggage());
             /** @var Span $span */
-            $span = $context->get(ContextKeys::span());
+            $span = Context::getCurrent()->get(ContextKeys::span());
 
             return new OTelResponse([
                 "trace" => $span->getContext()->getTraceId(),

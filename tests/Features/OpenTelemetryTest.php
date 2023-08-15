@@ -26,7 +26,7 @@ class OpenTelemetryTest extends TestCase
     {
         parent::setUp();
 
-        //$processor = new SimpleSpanProcessor((new ConsoleSpanExporterFactory())->create()),
+//        $processor = new SimpleSpanProcessor((new ConsoleSpanExporterFactory())->create());
         $processor = new NoopSpanProcessor();
         $tracerProvider = new TracerProvider(
             $processor,
