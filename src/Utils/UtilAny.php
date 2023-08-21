@@ -30,7 +30,7 @@ class UtilAny
     /**
      * 按照注册的类解析
      *
-     * @param string $bin protobuf 二进制数据
+     * @param Any $any
      *
      * @return Message|null
      * @throws \Exception
