@@ -18,7 +18,7 @@ class UtilAny
      *
      * @return void
      */
-    static public function register(string $protoType, string $targetClass)
+    public static function register(string $protoType, string $targetClass)
     {
         if (empty($protoType) || empty($targetClass)) {
             return;
@@ -35,7 +35,7 @@ class UtilAny
      * @return Message|null
      * @throws \Exception
      */
-    static public function decodeAny(string $bin): ?Message
+    public static function decodeAny(string $bin): ?Message
     {
         $any = new Any();
         $any->mergeFromString($bin);
