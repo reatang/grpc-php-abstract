@@ -24,7 +24,11 @@ class UtilAny
             return;
         }
 
-        self::$anyClassRegister["type.googleapis.com/{$protoType}"] = $targetClass;
+        if (substr($protoType, 0, 19) == "type.googleapis.com") {
+            self::$anyClassRegister[$protoType] = $targetClass;
+        } else {
+            self::$anyClassRegister["type.googleapis.com/{$protoType}"] = $targetClass;
+        }
     }
 
     /**
