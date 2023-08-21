@@ -24,6 +24,8 @@ abstract grpc and grpc-gateway
 ```php
 <?php
 
+use \Path\To\ServerName\SomeServerAbsRpc;
+
 // ... 
 
 // 初始化php-abs-grpc生成的客户端
