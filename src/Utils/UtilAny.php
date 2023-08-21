@@ -35,10 +35,8 @@ class UtilAny
      * @return Message|null
      * @throws \Exception
      */
-    public static function decodeAny(string $bin): ?Message
+    public static function decodeAny(Any $any): ?Message
     {
-        $any = new Any();
-        $any->mergeFromString($bin);
         if (empty($any->getTypeUrl()) || !isset(self::$anyClassRegister[$any->getTypeUrl()])) {
             return null;
         }
