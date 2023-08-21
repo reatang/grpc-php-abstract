@@ -10,6 +10,33 @@ abstract grpc and grpc-gateway
 - [x] 开发自动生成grpc原生客户端抽象层 [protoc-gen-php-abs-grpc](https://github.com/reatang/protoc-gen-php-abs-grpc)
 - [ ] 开发自动生成grpc-gateway抽象层 `很显然，没搞呢`
 
+
+## 安装
+
+```shell
+> composer require reatang/grpc-php-abstract
+```
+
+## 使用
+
+本教程假定您已经知道 `protobuf`、`grpc` 的基础知识，并预先学习了 [protoc-gen-php-abs-grpc](https://github.com/reatang/protoc-gen-php-abs-grpc) 生成器的功能。
+
+```php
+<?php
+
+// ... 
+
+// 初始化php-abs-grpc生成的客户端
+$client = new SomeServerAbsRpc("127.0.0.1:8080");
+
+// 调用方法
+$response = $client->ping(new \Path\To\ServerName\PB\PingRequest(['ping' => 'hello world']));
+
+echo $response->getPong() . PHP_EOL;
+
+
+```
+
 ## 业务错误信息传递方案
 
 在golang的grpc业务处理中，一般返回值是两个：
