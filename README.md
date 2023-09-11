@@ -64,3 +64,9 @@ return response, error
 
 - PHP grpc 使用文档：https://grpc.io/docs/languages/php
 - PHP grpc 源码文档：https://github.com/grpc/grpc/tree/master/src/php
+
+## 鸣谢
+
+![jetbrains](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
+
+感谢[jetbrains](https://jb.gg/OpenSourceSupport) 对开源项目提供的支持
