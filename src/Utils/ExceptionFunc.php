@@ -1,8 +1,10 @@
 <?php
 
-namespace Reatang\GrpcPHPAbstract\Exceptions;
+namespace Reatang\GrpcPHPAbstract\Utils;
 
 use GuzzleHttp\Exception\ServerException;
+use Reatang\GrpcPHPAbstract\Exceptions\GrpcBusinessException;
+use Reatang\GrpcPHPAbstract\Exceptions\GrpcException;
 use const Grpc\STATUS_UNKNOWN;
 
 /**

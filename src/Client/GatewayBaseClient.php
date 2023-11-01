@@ -2,17 +2,17 @@
 
 namespace Reatang\GrpcPHPAbstract\Client;
 
-use Reatang\GrpcPHPAbstract\Middlewares\GatewayMiddleware;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
-use Reatang\GrpcPHPAbstract\Exceptions\ExceptionFunc;
 use Reatang\GrpcPHPAbstract\Exceptions\GrpcException;
 use Reatang\GrpcPHPAbstract\Metadata\GatewayHandle;
 use Reatang\GrpcPHPAbstract\Metadata\Metadata;
+use Reatang\GrpcPHPAbstract\Middlewares\GatewayMiddleware;
+use Reatang\GrpcPHPAbstract\Utils\ExceptionFunc;
 
 abstract class GatewayBaseClient
 {

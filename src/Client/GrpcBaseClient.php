@@ -7,12 +7,12 @@ use Grpc\BaseStub;
 use Grpc\ChannelCredentials;
 use Grpc\Interceptor;
 use Psr\Log\LoggerInterface;
-use Reatang\GrpcPHPAbstract\Exceptions\ExceptionFunc;
 use Reatang\GrpcPHPAbstract\Exceptions\GrpcException;
 use Reatang\GrpcPHPAbstract\Metadata\GrpcHandle;
 use Reatang\GrpcPHPAbstract\Metadata\Metadata;
 use Reatang\GrpcPHPAbstract\Middlewares\GrpcLogger;
 use Reatang\GrpcPHPAbstract\Middlewares\GrpcRetry;
+use Reatang\GrpcPHPAbstract\Utils\ExceptionFunc;
 use Reatang\GrpcPHPAbstract\Utils\LoggerTrait;
 
 abstract class GrpcBaseClient

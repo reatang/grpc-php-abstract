@@ -1,6 +1,7 @@
 {
     "name": "reatang/grpc-php-abstract",
     "description": "php兼容 grpc原生客户端 和 grpc-gateway 调用",
+    "homepage": "https://github.com/reatang/grpc-php-abstract",
     "type": "library",
     "license": "MIT",
     "authors": [

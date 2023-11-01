@@ -28,7 +28,8 @@ class GatewayHandle
      *
      * @return void
      */
-    public static function parseHeader(array $headers): Metadata {
+    public static function parseHeader(array $headers): Metadata
+    {
         $m = $t = [];
         foreach ($headers as $h => $values) {
             if (strpos($h, self::MetadataHeaderPrefix) !== false) {

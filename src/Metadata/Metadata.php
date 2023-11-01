@@ -24,14 +24,17 @@ class Metadata
         return new static($header, $trailers);
     }
 
-    public static function pairs(string ...$kv): MD {
+    public static function pairs(string ...$kv): MD
+    {
         if (count($kv) % 2 == 1) {
             throw new \Exception(sprintf("metadata: Pairs got the odd number of input pairs for metadata: %d", count($kv)));
         }
+
         $md = new MD;
         for ($i = 0; $i < count($kv); $i += 2) {
             $md->append($kv[$i], $kv[$i+1]);
         }
+
         return $md;
     }
 }

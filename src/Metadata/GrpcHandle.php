@@ -13,7 +13,8 @@ class GrpcHandle
      *
      * @return Metadata
      */
-    public static function parseCall(AbstractCall $call): Metadata {
+    public static function parseCall(AbstractCall $call): Metadata
+    {
         return new Metadata(self::toLowKey($call->getMetadata()), self::toLowKey($call->getTrailingMetadata()));
     }
 
