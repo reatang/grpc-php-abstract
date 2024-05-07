@@ -9,6 +9,7 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 use Reatang\GrpcPHPAbstract\Exceptions\GrpcException;
+use Reatang\GrpcPHPAbstract\Exceptions\GrpcPhpClientException;
 use Reatang\GrpcPHPAbstract\Metadata\GatewayHandle;
 use Reatang\GrpcPHPAbstract\Metadata\Metadata;
 use Reatang\GrpcPHPAbstract\Middlewares\GatewayMiddleware;
@@ -42,6 +43,7 @@ abstract class GatewayBaseClient
         $h->push(Middleware::httpErrors(), 'http_errors');
         $h->push(Middleware::prepareBody(), 'prepare_body');
         $h->push(GatewayMiddleware::retry(), 'retry');
+        $h->push(GatewayMiddleware::openTelemetryTrace(), "open_telemetry");
 
         $this->client = new Client([
             'base_uri' => $this->host(),
@@ -93,6 +95,28 @@ abstract class GatewayBaseClient
     }
 
     /**
+     * 处理各种额外选项
+     *
+     * @param $reqOpts
+     *
+     * @return array
+     * @throws GrpcPhpClientException
+     */
+    private function requestOpts($reqOpts) : array
+    {
+        $opts = [];
+        if (isset($reqOpts[Options::Metadata])) {
+            if (!($reqOpts[Options::Metadata] instanceof Metadata)) {
+                throw new GrpcPhpClientException("Request Options: [Metadata] need " . Metadata::class);
+            }
+
+            $opts[RequestOptions::HEADERS] = GatewayHandle::toHeader($reqOpts[Options::Metadata]);
+        }
+
+        return $opts;
+    }
+
+    /**
      * @param $name
      * @param $arguments
      *
@@ -111,6 +135,10 @@ abstract class GatewayBaseClient
             $opts = [];
             if (isset($arguments[0])) {
                 $opts[RequestOptions::BODY] = $arguments[0]->serializeToJsonString();
+            }
+
+            if (isset($arguments[1])) {
+                $opts = array_merge($opts, $this->requestOpts($arguments[1]));
             }
 
             $response = $this->client->request('POST', $route->getUrl(), $opts);

@@ -14,9 +14,10 @@ class TestServer
         if (static::$is_initialized == true) {
           return;
         }
+        \GPBMetadata\Google\Api\Annotations::initOnce();
         $pool->internalAddGeneratedFile(
             '
-Ö
+µ
 test_server.proto$reatang.grpc_php_abstract.tests.mock"
 PingRequest
 ping (	"
@@ -25,11 +26,13 @@ class TestServer
 OTelRequest".
 OTelResponse
 trace (	
-baggage (	2Í
+baggage (	2ö
 
-TestServerm
-Ping1.reatang.grpc_php_abstract.tests.mock.PingRequest2.reatang.grpc_php_abstract.tests.mock.PingResponsem
-OTel1.reatang.grpc_php_abstract.tests.mock.OTelRequest2.reatang.grpc_php_abstract.tests.mock.OTelResponseB[Z./mock¬PB\\ "Reatang\\GrpcPHPAbstract\\Tests\\Mock–‚"Reatang\\GrpcPHPAbstract\\Tests\\Mockbproto3'
+TestServerÑ
+Ping1.reatang.grpc_php_abstract.tests.mock.PingRequest2.reatang.grpc_php_abstract.tests.mock.PingResponse"Ç”‰ì"
+/grpc/ping:*Ñ
+OTel1.reatang.grpc_php_abstract.tests.mock.OTelRequest2.reatang.grpc_php_abstract.tests.mock.OTelResponse"Ç”‰ì"
+/grpc/otel:*B[Z./mock¬PB\\ "Reatang\\GrpcPHPAbstract\\Tests\\Mock–‚"Reatang\\GrpcPHPAbstract\\Tests\\Mockbproto3'
         , true);
 
         static::$is_initialized = true;

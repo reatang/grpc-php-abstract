@@ -84,7 +84,7 @@ class GatewayRetry
     {
         return function ($reason) use ($req, $options) {
             if (!$this->decider($options['retries'], $req, null, $reason)) {
-                return \GuzzleHttp\Promise\rejection_for($reason);
+                return \GuzzleHttp\Promise\Create::rejectionFor($reason);
             }
 
             return $this->doRetry($req, $options);

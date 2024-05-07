@@ -59,6 +59,9 @@ class GrpcOpenTelemetryTrace extends Interceptor
         $span->setAttribute(TraceAttributes::RPC_GRPC_STATUS_CODE, $status->code);
 
         if ($status->code != \Grpc\STATUS_OK) {
+            $span->setAttributes([
+                TraceAttributes::RPC_GRPC_STATUS_CODE => $status->code,
+            ]);
             $span->setStatus(StatusCode::STATUS_ERROR, $status->details)->end();
         } else {
             $span->setStatus(StatusCode::STATUS_OK)->end();

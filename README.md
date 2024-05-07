@@ -6,7 +6,7 @@ abstract grpc and grpc-gateway
 - [x] 添加解析 protobuf Any 参数的工具 UtilAny
 - [x] 一元请求重试中间件
 - [x] 支持配置化的默认调用行为
-- [x] 支持OTLP链路追踪
+- [x] 支持OpenTelemetry链路追踪（grpc、gateway都已支持）
 - [x] 开发自动生成grpc原生客户端抽象层 [protoc-gen-php-abs-grpc](https://github.com/reatang/protoc-gen-php-abs-grpc)
 - [ ] 开发自动生成grpc-gateway抽象层 `很显然，没搞呢`
 

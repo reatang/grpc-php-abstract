@@ -2,9 +2,17 @@
 
 namespace Reatang\GrpcPHPAbstract\Middlewares;
 
+use GuzzleHttp\Psr7\Response;
+use OpenTelemetry\API\Globals;
+use OpenTelemetry\API\Trace\SpanKind;
+use OpenTelemetry\API\Trace\StatusCode;
+use OpenTelemetry\Context\Context;
+use OpenTelemetry\SemConv\TraceAttributes;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Reatang\GrpcPHPAbstract\Metadata\GatewayHandle;
 use Reatang\GrpcPHPAbstract\Metadata\Metadata;
+use Reatang\GrpcPHPAbstract\Utils\MetadataAccessGetterSetter;
 
 class GatewayMiddleware
 {
@@ -24,8 +32,8 @@ class GatewayMiddleware
      */
     public static function GrpcGatewayOpt($timeout): callable
     {
-        return static function (callable $handler) use ($timeout): callable {
-            return static function (RequestInterface $request, array $options) use ($handler, $timeout) {
+        return function (callable $handler) use ($timeout): callable {
+            return function (RequestInterface $request, array $options) use ($handler, $timeout) {
                 $request = $request
                     ->withAddedHeader('Accept', '*')
                     ->withAddedHeader(GatewayHandle::metadataGrpcTimeout, $timeout);
@@ -45,8 +53,8 @@ class GatewayMiddleware
      */
     public static function GrpcMetadata(array $headers, array $trailers = []): callable
     {
-        return static function (callable $handler) use ($headers, $trailers) : callable  {
-            return static function (RequestInterface $request, array $options) use ($headers, $trailers, $handler) {
+        return function (callable $handler) use ($headers, $trailers) : callable  {
+            return function (RequestInterface $request, array $options) use ($headers, $trailers, $handler) {
                 $md = Metadata::create($headers, $trailers);
 
                 foreach (GatewayHandle::toHeader($md) as $k => $v) {
@@ -70,6 +78,51 @@ class GatewayMiddleware
     {
         return function (callable $handler) use ($maxAttempt, $delay) {
             return new GatewayRetry($maxAttempt, $delay, $handler);
+        };
+    }
+
+    public static function openTelemetryTrace(): callable
+    {
+        $tracer = Globals::tracerProvider()->getTracer("reatang/grpc-php-abstract");
+
+        return function (callable $handler) use ($tracer) {
+            return function (RequestInterface $request, array $options) use ($handler, $tracer) {
+                $name = sprintf("POST %s", $request->getUri()->getPath());
+
+                $span = $tracer->spanBuilder($name)
+                               ->setSpanKind(SpanKind::KIND_CLIENT)
+                               ->setParent(Context::getCurrent())
+                               ->startSpan();
+                $ctx = $span->storeInContext(Context::getCurrent());
+                $scope = $span->activate();
+
+                $metadata = [];
+                Globals::propagator()->inject($metadata, MetadataAccessGetterSetter::getInstance(), $ctx);
+
+                foreach (GatewayHandle::toHeader(Metadata::create($metadata)) as $k => $v) {
+                    $request = $request->withAddedHeader($k, $v);
+                }
+
+                /** @var \GuzzleHttp\Promise\FulfilledPromise $promise */
+                $promise = $handler($request, $options);
+
+                $promise->then(function (ResponseInterface $response) use ($span, $scope) {
+                    $span->setAttributes([
+                        TraceAttributes::HTTP_STATUS_CODE => $response->getStatusCode(),
+                    ]);
+                    $span->setStatus(StatusCode::STATUS_OK)->end();
+                    $scope->detach();
+                }, function (\Throwable $e) use ($span, $scope) {
+                    $span->setAttributes([
+                        TraceAttributes::EXCEPTION_TYPE => get_class($e),
+                        TraceAttributes::EXCEPTION_MESSAGE => $e->getMessage(),
+                    ]);
+                    $span->setStatus(StatusCode::STATUS_ERROR, $e->getMessage())->end();
+                    $scope->detach();
+                });
+
+                return $promise;
+            };
         };
     }
 }

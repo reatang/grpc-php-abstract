@@ -11,12 +11,10 @@ use OpenTelemetry\SDK\Trace\Sampler\AlwaysOnSampler;
 use OpenTelemetry\SDK\Trace\Sampler\ParentBased;
 use OpenTelemetry\SDK\Trace\SpanProcessor\NoopSpanProcessor;
 use OpenTelemetry\SDK\Trace\TracerProvider;
-use Reatang\GrpcPHPAbstract\Middlewares\GrpcOpenTelemetryTrace;
 use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest;
-use Reatang\GrpcPHPAbstract\Tests\Mock\TestServerAbsRpc;
 use Reatang\GrpcPHPAbstract\Tests\TestCase;
 
-class OpenTelemetryTest extends TestCase
+class OpenTelemetryGatewayTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -39,19 +37,12 @@ class OpenTelemetryTest extends TestCase
            ->buildAndRegisterGlobal();
     }
 
-    protected function getMockClient(): TestServerAbsRpc
-    {
-        return new TestServerAbsRpc("127.0.0.1:9099", [
-            new GrpcOpenTelemetryTrace(),
-        ]);
-    }
-
     public function testBase()
     {
-        $response = $this->getMockClient()->OTel(new OTelRequest());
+        $response = $this->getMockGatewayClient()->OTel(new OTelRequest());
 
-        $this->assertNotEquals($response->getTrace(), '00000000000000000000000000000000');
         $this->assertTrue(!empty($response->getTrace()));
+        $this->assertNotEquals($response->getTrace(), '00000000000000000000000000000000');
     }
 
     public function testBaggage()
@@ -59,7 +50,7 @@ class OpenTelemetryTest extends TestCase
         $baggageVar = "123";
         $scope = Baggage::getCurrent()->toBuilder()->set("baggage1", $baggageVar)->build()->activate();
 
-        $response = $this->getMockClient()->OTel(new OTelRequest());
+        $response = $this->getMockGatewayClient()->OTel(new OTelRequest());
 
         $scope->detach();
 

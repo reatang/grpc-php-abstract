@@ -3,7 +3,7 @@
 
 namespace Reatang\GrpcPHPAbstract\Tests\Mock;
 
-use Reatang\GrpcPHPAbstract\Client\GrpcBaseClient;
+use Reatang\GrpcPHPAbstract\Client\GatewayBaseClient;
 
 // 请求参数
 use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingRequest;
@@ -18,10 +18,13 @@ use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse;
  * @method OTelResponse OTel(OTelRequest $request, array $opts = [])
  *
  */
-class TestServerAbsRpc extends GrpcBaseClient
+class TestServerGatewayRpc extends GatewayBaseClient
 {
-    public function __construct($host, array $interceptors = [], array $options = [])
+    public function __construct($host, array $interceptors = [])
     {
-        parent::__construct($host, TestServerClient::class, $interceptors, $options);
+        parent::__construct($host, $interceptors);
+
+        $this->addRoute("Ping", "/grpc/ping", PingResponse::class);
+        $this->addRoute("OTel", "/grpc/otel", OTelResponse::class);
     }
 }

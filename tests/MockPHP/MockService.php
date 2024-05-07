@@ -11,6 +11,7 @@ use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest;
 use Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse;
 use Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingRequest;
 use Reatang\GrpcPHPAbstract\Tests\Mock\PB\PingResponse;
+use Reatang\GrpcPHPAbstract\Tests\Mock\PB\TestServerInterface;
 use Reatang\GrpcPHPAbstract\Tests\Mock\TestServerStub;
 
 class MockService extends TestServerStub

@@ -56,10 +56,10 @@ class GatewayHandle
     {
         $n = [];
         foreach ($metadata->header->toArray() as $h => $v) {
-            $n[GatewayHandle::MetadataHeaderPrefix . $h] = is_array($v) ? join(',', $v) : $v;
+            $n[GatewayHandle::MetadataHeaderPrefix . ucfirst($h)] = is_array($v) ? join(',', $v) : $v;
         }
         foreach ($metadata->trailer->toArray() as $h => $v) {
-            $n[GatewayHandle::MetadataTrailerPrefix . $h] = is_array($v) ? join(',', $v) : $v;
+            $n[GatewayHandle::MetadataTrailerPrefix . ucfirst($h)] = is_array($v) ? join(',', $v) : $v;
         }
 
         return $n;

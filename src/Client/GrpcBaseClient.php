@@ -144,6 +144,25 @@ abstract class GrpcBaseClient
     }
 
     /**
+     * @param Metadata $metadata
+     *
+     * @return array
+     */
+    private function requestMetadata(Metadata $metadata) : array
+    {
+        $md = $metadata->header->toArray();
+        foreach ($md as $k => $v) {
+            if (!is_array($v)) {
+                $v = [$v];
+            }
+
+            $md[$k] = $v;
+        }
+
+        return $md;
+    }
+
+    /**
      * 返回原生的grpc调用结果
      *
      * @param $method
@@ -153,16 +172,21 @@ abstract class GrpcBaseClient
      */
     protected function rawCall($method, $arguments)
     {
-        if (!isset($arguments[1])) {
-            $arguments[1] = [];
+        $rawArguments[0] = $arguments[0];
+        if (isset($arguments[1]) && $arguments[1][Options::Metadata]) {
+            $rawArguments[1] = $this->requestMetadata($arguments[1][Options::Metadata]);
+        } else {
+            $rawArguments[1] = [];
         }
 
         // timeout 单位：微秒
         if ($this->timeout > 0) {
-            $arguments[2]['timeout'] = $this->timeout * 1000;
+            $rawArguments[2] = [
+                'timeout' => $this->timeout * 1000,
+            ];
         }
 
-        $call = call_user_func_array([$this->client, ucfirst($method)], $arguments);
+        $call = call_user_func_array([$this->client, ucfirst($method)], $rawArguments);
 
         return $call->wait();
     }

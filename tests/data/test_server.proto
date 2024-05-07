@@ -9,6 +9,8 @@ option php_metadata_namespace = "Reatang\\GrpcPHPAbstract\\Tests\\Mock";
 option php_namespace = "Reatang\\GrpcPHPAbstract\\Tests\\Mock";
 option php_generic_services = true;
 
+import "google/api/annotations.proto";
+
 message PingRequest {
   string ping = 1;
 }
@@ -26,7 +28,17 @@ message OTelResponse {
 }
 
 service TestServer {
-  rpc Ping(PingRequest) returns(PingResponse);
+  rpc Ping(PingRequest) returns(PingResponse) {
+    option (google.api.http) = {
+      post: "/grpc/ping"
+      body: "*"
+    };
+  };
 
-  rpc OTel(OTelRequest) returns(OTelResponse);
+  rpc OTel(OTelRequest) returns(OTelResponse){
+    option (google.api.http) = {
+      post: "/grpc/otel"
+      body: "*"
+    };
+  }
 }
