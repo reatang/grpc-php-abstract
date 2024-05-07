@@ -12,8 +12,6 @@ use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelRequest;
 use \Reatang\GrpcPHPAbstract\Tests\Mock\PB\OTelResponse;
 
 /**
- * @property TestServerClient $client
- *
  * @method PingResponse Ping(PingRequest $request, array $opts = [])
  * @method OTelResponse OTel(OTelRequest $request, array $opts = [])
  *

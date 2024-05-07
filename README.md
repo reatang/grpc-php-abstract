@@ -8,7 +8,7 @@ abstract grpc and grpc-gateway
 - [x] 支持配置化的默认调用行为
 - [x] 支持OpenTelemetry链路追踪（grpc、gateway都已支持）
 - [x] 开发自动生成grpc原生客户端抽象层 [protoc-gen-php-abs-grpc](https://github.com/reatang/protoc-gen-php-abs-grpc)
-- [ ] 开发自动生成grpc-gateway抽象层 `很显然，没搞呢`
+- [x] 开发自动生成grpc-gateway抽象层： `--php-abs-grpc_opt=genType=gateway` 则生成gateway抽象层
 
 
 ## 安装
