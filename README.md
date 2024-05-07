@@ -50,7 +50,8 @@ return response, error
 我的details内容格式则是：
 ```text
 !int:string
-!错误码:错误信息string
+!错误码:错误信息
+
 如：
 !100:您的操作有误
 ```
