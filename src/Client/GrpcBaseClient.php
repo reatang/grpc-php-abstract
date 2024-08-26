@@ -205,11 +205,12 @@ abstract class GrpcBaseClient
         [$resp, $status] = $this->rawCall($name, $arguments);
 
         if ($this->checkReconnection($status) && !empty($this->reConnectionParams)) {
+            // 重连
             $this->client->close();
             $this->reConnectionParams[3] = true;
             $this->initClient(...$this->reConnectionParams);
 
-            // 重连
+            // 重新调用
             [$resp, $status] = $this->rawCall($name, $arguments);
         }
 

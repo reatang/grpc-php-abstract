@@ -83,7 +83,7 @@ class GatewayMiddleware
 
     public static function openTelemetryTrace(): callable
     {
-        $tracer = Globals::tracerProvider()->getTracer("reatang/grpc-php-abstract");
+        $tracer = Globals::tracerProvider()->getTracer("reatang/grpc-php-abstract", "0.5.0");
 
         return function (callable $handler) use ($tracer) {
             return function (RequestInterface $request, array $options) use ($handler, $tracer) {

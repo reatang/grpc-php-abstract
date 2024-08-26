@@ -40,6 +40,7 @@ abstract class GatewayBaseClient
         foreach ($middleware as $name => $call) {
             $h->push($call, $name);
         }
+
         $h->push(Middleware::httpErrors(), 'http_errors');
         $h->push(Middleware::prepareBody(), 'prepare_body');
         $h->push(GatewayMiddleware::retry(), 'retry');

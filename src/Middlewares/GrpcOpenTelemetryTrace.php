@@ -25,7 +25,7 @@ class GrpcOpenTelemetryTrace extends Interceptor
 
     public function __construct()
     {
-        $this->tracer = Globals::tracerProvider()->getTracer("reatang/grpc-php-abstract");
+        $this->tracer = Globals::tracerProvider()->getTracer("reatang/grpc-php-abstract", "0.5.0");
     }
 
     public function interceptUnaryUnary(
