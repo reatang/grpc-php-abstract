@@ -27,6 +27,10 @@ message OTelResponse {
   string baggage = 2;
 }
 
+message SomeMap {
+  map<string, string> map1 = 1;
+}
+
 service TestServer {
   rpc Ping(PingRequest) returns(PingResponse) {
     option (google.api.http) = {

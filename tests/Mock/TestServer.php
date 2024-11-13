@@ -17,7 +17,7 @@ class TestServer
         \GPBMetadata\Google\Api\Annotations::initOnce();
         $pool->internalAddGeneratedFile(
             '
-µ
+¥
 test_server.proto$reatang.grpc_php_abstract.tests.mock"
 PingRequest
 ping (	"
@@ -26,7 +26,12 @@ class TestServer
 OTelRequest".
 OTelResponse
 trace (	
-baggage (	2ö
+baggage (	"}
+SomeMapE
+map1 (27.reatang.grpc_php_abstract.tests.mock.SomeMap.Map1Entry+
+	Map1Entry
+key (	
+value (	:82ö
 
 TestServerÑ
 Ping1.reatang.grpc_php_abstract.tests.mock.PingRequest2.reatang.grpc_php_abstract.tests.mock.PingResponse"Ç”‰ì"
